@@ -22,14 +22,14 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('function_name', [AppExtensionRuntime::class, 'doSomething']),
+            new TwigFunction('pluralize', [$this, 'doSomething']),
         ];
     }
 
-    public function doSomething(int $count, string $singular, ?string $plural): string
+    public function doSomething(int $count, string $singular, ?string $plural = null): string
     {
         $plural = $plural ?? $singular . 's';
-        
+
         $str = $count === 1 ? $singular : $plural;
 
         return "$count $str";
