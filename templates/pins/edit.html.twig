@@ -3,7 +3,7 @@
 {% block title 'Edit Pin #' ~ pin.id %}
 
 {% block body %}
-    <h1>Create new Pin</h1>
+    <h1>Edit Pin #{{ pin.id }}</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}

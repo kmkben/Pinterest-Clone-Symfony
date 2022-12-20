@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Pin;
+use App\Form\PinType;
 use App\Repository\PinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PinsController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home', methods: ["GET"])]
     public function index(PinRepository $pinRepository): Response
     {
         //$pins = $pinRepository->findAll();
@@ -25,16 +26,12 @@ class PinsController extends AbstractController
     }
 
 
-    #[Route('/pins/create', name: 'app_pins_create')]
+    #[Route('/pins/create', name: 'app_pins_create', methods: ["GET", "POST"])]
     public function create(Request $request, PinRepository $pinRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         $pin = new Pin;
 
-        $form = $this->createFormBuilder($pin)
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
-            ->getForm()
-        ;
+        $form = $this->createForm(PinType::class, $pin);
 
         $form->handleRequest($request);
 
@@ -58,22 +55,18 @@ class PinsController extends AbstractController
     }
 
 
-    #[Route('/pins/{id<\d+>}', name: 'app_pins_show')]
+    #[Route('/pins/{id<\d+>}', name: 'app_pins_show', methods: ["GET"])]
     public function show(Pin $pin): Response
     {
 
         return $this->render('pins/show.html.twig', compact('pin'));
     }
 
-    #[Route('/pins/{id<\d+>}/edit', name: 'app_pins_edit')]
+    #[Route('/pins/{id<\d+>}/edit', name: 'app_pins_edit', methods: ["GET", "POST"])]
     public function edit(Pin $pin, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
 
-        $form = $this->createFormBuilder($pin)
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
-            ->getForm()
-        ;
+        $form = $this->createForm(PinType::class, $pin);
 
         $form->handleRequest($request);
 
