@@ -12,8 +12,33 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <style>
+            .alert{
+                padding: 10px;
+                color: #fff;
+                text-align: center;
+            }
+
+            .alert-success{
+                background-color: green;
+            }
+
+            .alert-info{
+                background-color: blue;
+            }
+
+            .alert-error{
+                background-color: red;
+            }
+
+            .alert-warning{
+                background-color: orange;
+            }
+        </style>
     </head>
     <body>
+
+        {{ include('partials/_flash_messages.html.twig') }}
 
         <nav>
             <ul>

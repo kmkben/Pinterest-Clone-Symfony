@@ -45,6 +45,8 @@ class PinsController extends AbstractController
             $entityManagerInterface->persist($pin);
             $entityManagerInterface->flush();
 
+            $this->addFlash('success', 'Pin successfully created');
+
             return $this->redirectToRoute('app_home');
 
         }
@@ -82,6 +84,8 @@ class PinsController extends AbstractController
             //$entityManagerInterface->persist($pin);
             $entityManagerInterface->flush();
 
+            $this->addFlash('success', 'Pin successfully updated');
+
             return $this->redirectToRoute('app_home');
 
         }
@@ -102,6 +106,8 @@ class PinsController extends AbstractController
         {
             $entityManagerInterface->remove($pin);
             $entityManagerInterface->flush();
+
+            $this->addFlash('warning', 'Pin successfully deleted');
         }
         
 
