@@ -3,3 +3,13 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+app_pins_edit:
+    path:       /pins/{id<\d+>}/edit
+    controller: App\Controller\PinsController::edit
+    methods:    GET|PUT
+
+app_pins_delete:
+    path:       /pins/{id<\d+>}/delete
+    controller: App\Controller\PinsController::delete
+    methods:    DELETE

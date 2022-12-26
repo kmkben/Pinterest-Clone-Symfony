@@ -7,8 +7,6 @@ use App\Form\PinType;
 use App\Repository\PinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,11 +60,13 @@ class PinsController extends AbstractController
         return $this->render('pins/show.html.twig', compact('pin'));
     }
 
-    #[Route('/pins/{id<\d+>}/edit', name: 'app_pins_edit', methods: ["GET", "PUT", "POST"])]
+    #[Route('/pins/{id<\d+>}/edit', name: 'app_pins_edit', methods: ['GET', 'PUT'])]
     public function edit(Pin $pin, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
 
-        $form = $this->createForm(PinType::class, $pin);
+        $form = $this->createForm(PinType::class, $pin, [
+            'method' => 'PUT'
+        ]);
 
         $form->handleRequest($request);
 
@@ -97,10 +97,13 @@ class PinsController extends AbstractController
     public function delete(Pin $pin, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
 
-        Request::enableHttpMethodParameterOverride(); // <-- add this line
-        $request = Request::createFromGlobals();
-        $entityManagerInterface->remove($pin);
-        $entityManagerInterface->flush();
+
+        if ($this->isCsrfTokenValid('pin_delete_' . $pin->getId(), $request->request->get('csrf_token')))
+        {
+            $entityManagerInterface->remove($pin);
+            $entityManagerInterface->flush();
+        }
+        
 
         return $this->redirectToRoute('app_home');
     }
