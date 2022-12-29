@@ -35,9 +35,8 @@ class Pin
     #[Assert\Length(min: 10)]
     private ?string $description = null;
 
-
-    // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'pin_image', fileNameProperty: 'imageName')]
+    #[Assert\Image(maxSize: "8M")]
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
