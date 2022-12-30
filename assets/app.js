@@ -11,3 +11,7 @@ import './scss/app.scss';
 // start the Stimulus application
 import $ from 'jquery';
 import 'bootstrap';
+
+$('#pin_imageFile_file').on('chnage', function(e){
+    var inputFile = e.currentTarget;
+});
