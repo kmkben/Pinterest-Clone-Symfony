@@ -10,11 +10,17 @@
                 <div class="alert alert-error rounded mb-3" role="alert">{{ flash_error }}</div>
             {% endfor %}
 
-            <h1>Register</h1>
+            <h1 class="my-5 text-center">Create an account</h1>
 
             {{ form_start(registrationForm) }}
-                {{ form_row(registrationForm.firstName) }}
-                {{ form_row(registrationForm.lastName) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(registrationForm.firstName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(registrationForm.lastName) }}
+                    </div>
+                </div>
                 {{ form_row(registrationForm.email) }}
                 {{ form_row(registrationForm.plainPassword, {
                     label: 'Password'
@@ -22,7 +28,7 @@
                 {{ form_row(registrationForm.agreeTerms) }}
 
                 <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-lg btn-primary">Register</button>
                 </div>
             {{ form_end(registrationForm) }}
 
