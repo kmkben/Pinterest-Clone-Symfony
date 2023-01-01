@@ -44,6 +44,8 @@ class PinsController extends AbstractController
             $pin->setTitle($data['title']);
             $pin->setDescription($data['description']);*/
 
+            $pin->setUser($this->getUser());
+
             $entityManagerInterface->persist($pin);
             $entityManagerInterface->flush();
 
