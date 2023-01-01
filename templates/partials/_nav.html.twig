@@ -10,27 +10,41 @@
                 <!--<li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ path('app_home')}}">Home</a>
                 </li>-->
+                {% if app.user %}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_pins_create') }}">New Pin</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_pins_create') }}">New Pin</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_home') }}">Account</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_home') }}">Account</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_home') }}">Logout</a>
-                </li>
+                    <!--<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">My account</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Login</a></li>
+                            <li><a class="dropdown-item" href="#">Sign up</a></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </li>-->
 
-                <!--<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">My account</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Login</a></li>
-                        <li><a class="dropdown-item" href="#">Sign up</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
-                    </ul>
-                </li>-->
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_home') }}">Register</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    </li>
+
+                {% endif %}
+
             </ul>
         
             <!--<form role="search">
