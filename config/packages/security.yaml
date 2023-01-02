@@ -18,7 +18,11 @@ security:
             provider: app_user_provider
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
+                #csrf_parameter: csrf_token
+                #csrf_tokent_id: logout
+                csrf_token_generator: Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
                 path: app_logout
+                enable_csrf: true
                 # where to redirect after logout
                 # target: app_login
 

@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -28,7 +29,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginFormAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginFormAuthenticator $authenticator, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         if ($this->getUser()) {
             $this->addFlash('info', 'Already logged');
@@ -60,6 +61,8 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('emails/registration/confirmation.html.twig')
             );
             // do anything else you need here, like send an email
+
+            //$mailer->send($email);
 
             return $userAuthenticator->authenticateUser(
                 $user,
