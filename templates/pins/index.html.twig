@@ -23,6 +23,16 @@
                             <h2 class="h5 ps-3 pt-3"><a href="{{ path('app_pins_show', {id: pin.id}) }}" class="text-secondary text-decoration-none">{{ pin.title }}</a></h2>
                             <!--<p>{{ pin.description|u.truncate(50, ' ...', false) }}</p>-->
                             <p class="ps-3 pb-3 text-muted"><small>Submitted by {{ pin.user.fullName }}</small></p>
+
+                            {#<a href="#" onClick="event.preventDefault(); confirm('Are you sure want to delete this pin ?') && 
+                                document.getElementById('js-pins-delete-form-{{ pin.id }}').submit();" class="m-3 btn btn-danger">&times; Delete</a>
+
+
+                            <form id="js-pins-delete-form-{{ pin.id }}" action="{{ path('app_pins_delete', {id: pin.id}) }}" method="POST" style="display: none;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('pin_delete_' ~ pin.id)}}" />
+                                <input type="hidden" name="_method" value="DELETE" />
+                            </form>#}
+
                         </article>
                     </div>
                 {% endfor %}
