@@ -2,18 +2,22 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+
 use App\Form\ChangePasswordFormType;
 use App\Form\UserFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
+#[Route('/account')]
 class AccountController extends AbstractController
 {
-    #[Route('/account', name: 'app_account', methods:"GET")]
+    #[Route('', name: 'app_account', methods:"GET")]
     public function show(): Response
     {
 
@@ -22,7 +26,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/account/edit', name: 'app_account_edit', methods:"GET|POST")]
+    #[Route('/edit', name: 'app_account_edit', methods:"GET|POST")]
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -46,19 +50,24 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/account/change-password', name: 'app_account_change_password', methods:"GET|POST")]
-    public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder): Response
+    #[Route('/change-password', name: 'app_account_change_password', methods:"GET|POST")]
+    public function changePassword(Request $request, EntityManagerInterface $entityManager, 
+                    UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator,): Response
     {
         $user = $this->getUser();
         
-        $form = $this->createForm(ChangePasswordFormType::class);
+        $form = $this->createForm(ChangePasswordFormType::class, null, [
+            'current_password_is_required' => true
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
             $user->setPassword(
-                $passwordEncoder->encodePassword($user, $form->get('plainPassword')->getData())
+                $userPasswordHasher->hashPassword(
+                    $user, 
+                    $form->get('plainPassword')->getData())
             );
 
             $entityManager->flush();
