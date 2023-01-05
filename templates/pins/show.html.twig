@@ -28,12 +28,16 @@
                         {{ pin.description|u.truncate(50, ' ...', false) }}
                     </p>
 
-                    <div class="pt-3" >
-                        <a href="{{ path('app_pins_edit', {id: pin.id}) }}" class="btn btn-info">Edit</a> 
-                        <a href="#" onClick="event.preventDefault(); confirm('Are you sure want to delete this pin ?') && 
-                        document.getElementById('js-pins-delete-form').submit();" class="btn btn-danger">Delete</a>  
-                        <!--<a href="{{ path('app_home') }}">Go back</a>-->
-                    </div>
+                    {% if app.user == pin.user %}
+                        
+                        <div class="pt-3" >
+                            <a href="{{ path('app_pins_edit', {id: pin.id}) }}" class="btn btn-info">Edit</a> 
+                            <a href="#" onClick="event.preventDefault(); confirm('Are you sure want to delete this pin ?') && 
+                            document.getElementById('js-pins-delete-form').submit();" class="btn btn-danger">Delete</a>  
+                            <!--<a href="{{ path('app_home') }}">Go back</a>-->
+                        </div>
+
+                    {% endif %}
                 </div>
             </article>
 

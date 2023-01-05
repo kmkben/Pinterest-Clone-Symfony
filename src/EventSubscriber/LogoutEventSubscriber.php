@@ -4,16 +4,16 @@ namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Http\Event\LogoutEvent;
+use Symfony\Component\Security\Http\Event\LogoutEvent;#
+use Symfony\Component\Security\Core\Security;
 
 class LogoutEventSubscriber implements EventSubscriberInterface
 {
     // private UrlGeneratorInterface $urlGenerator;
     // private FlashBagInterface $flashBag;
 
-    public function __construct(private FlashBagInterface $flashBag, private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private Security $security, private UrlGeneratorInterface $urlGenerator)
     {
         // $this->flashBag = $flashBag;
         // $this->urlGenerator = $urlGenerator;
@@ -21,15 +21,16 @@ class LogoutEventSubscriber implements EventSubscriberInterface
     
     public function onLogoutEvent(LogoutEvent $event): void
     {
-        // $event->getRequest()->getSession()->getFlashBag()->add(
-        //     'success',
-        //     'Logged out successfully'
-        // );
-
-        $this->flashBag->add(
+        $event->getRequest()->getSession()->getFlashBag()->add(
             'success',
-            'Logged out successfully'
-        );
+            'Bye bye ' . $this->security->getUser()->getFullName() . '. Come again when you want.'
+        ); //$event->getToken()->getUser()->getFullName() . '. Come again when you want.'
+        
+
+        // $this->flashBag->add(
+        //     'success',
+        //     'Bye ' . $security->getUser()->getFullName() . '. Come when you want.'
+        // );
 
         $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_home')));
     }

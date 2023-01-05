@@ -12,15 +12,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 #[Route('/account')]
+#[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
     #[Route('', name: 'app_account', methods:"GET")]
     public function show(): Response
     {
-
+       
         return $this->render('account/show.html.twig', [
             'controller_name' => 'AccountController',
         ]);
