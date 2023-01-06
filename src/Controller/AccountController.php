@@ -33,6 +33,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/edit', name: 'app_account_edit', methods:"GET|POST")]
+    #[IsGranted('IS_AUTHENTICATED_FULLY', null, "You should re-enter your credentiels to do this action")]
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -57,6 +58,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/change-password', name: 'app_account_change_password', methods:"GET|POST")]
+    #[IsGranted('IS_AUTHENTICATED_FULLY', null, "You should re-enter your credentiels to do this action")]
     public function changePassword(Request $request, EntityManagerInterface $entityManager, 
                     UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator,): Response
     {
