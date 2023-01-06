@@ -6,10 +6,12 @@ use App\Entity\Pin;
 use App\Form\PinType;
 use App\Repository\PinRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PinsController extends AbstractController
 {
@@ -27,9 +29,12 @@ class PinsController extends AbstractController
 
 
     #[Route('/pins/create', name: 'app_pins_create', methods: ["GET", "POST"])]
+    #[IsGranted(new Expression("is_granted('ROLE_USER') and user.isVerified()"), null, "You need to verify your email before create Pin")]
     public function create(Request $request, PinRepository $pinRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         $pin = new Pin;
+
+        //$this->denyAccessUnlessGranted('PIN_MANAGE', $pin, "You need to verify your email before do this action");
 
         $form = $this->createForm(PinType::class, $pin);
 
@@ -67,8 +72,10 @@ class PinsController extends AbstractController
     }
 
     #[Route('/pins/{id<\d+>}/edit', name: 'app_pins_edit', methods: ['GET', 'PUT'])]
+    #[IsGranted(new Expression("is_granted('PIN_MANAGE')"), subject: "pin", message: "You need to verify your email before change a Pin")]
     public function edit(Pin $pin, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        //$this->denyAccessUnlessGranted('PIN_MANAGE', $pin, "You need to verify your email before do this action");
 
         $form = $this->createForm(PinType::class, $pin, [
             'method' => 'PUT'
@@ -102,9 +109,10 @@ class PinsController extends AbstractController
 
 
     #[Route('/pins/{id<\d+>}', name: 'app_pins_delete', methods: ['DELETE'])]
+    #[IsGranted(new Expression("is_granted('PIN_MANAGE')"), subject: "pin", message: "You need to verify your email before delete a Pin")]
     public function delete(Pin $pin, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-
+        //$this->denyAccessUnlessGranted('PIN_MANAGE', $pin, "You need to verify your email before do this action");
 
         if ($this->isCsrfTokenValid('pin_delete_' . $pin->getId(), $request->request->get('csrf_token')))
         {

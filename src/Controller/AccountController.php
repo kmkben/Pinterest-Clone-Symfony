@@ -22,6 +22,10 @@ class AccountController extends AbstractController
     #[Route('', name: 'app_account', methods:"GET")]
     public function show(): Response
     {
+        if($this->getUser()->isVerified())
+        {
+            dd("Verified");
+        }
        
         return $this->render('account/show.html.twig', [
             'controller_name' => 'AccountController',
